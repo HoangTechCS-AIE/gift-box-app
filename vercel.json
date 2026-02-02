@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd gift-box && npm install && npm run build",
+  "outputDirectory": "gift-box/dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
