@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import './LoveCount.css'
 
 const LoveCount = ({ onBack }) => {
-  // Ngày bắt đầu yêu nhau - CÓ THỂ THAY ĐỔI NGÀY NÀY
-  const startDate = new Date('2024-02-14') // Format: YYYY-MM-DD
-  
+  // Ngày cưới - CÓ THỂ THAY ĐỔI NGÀY NÀY
+  const startDate = new Date('2022-11-13') // Format: YYYY-MM-DD (Ngày cưới)
+
   const [timeElapsed, setTimeElapsed] = useState({
     days: 0,
     hours: 0,
@@ -16,40 +16,40 @@ const LoveCount = ({ onBack }) => {
 
   useEffect(() => {
     setTimeout(() => setShowContent(true), 100)
-    
+
     const calculateTime = () => {
       const now = new Date()
       const diff = now - startDate
-      
+
       const totalSeconds = Math.floor(diff / 1000)
       const totalMinutes = Math.floor(totalSeconds / 60)
       const totalHours = Math.floor(totalMinutes / 60)
       const totalDays = Math.floor(totalHours / 24)
-      
+
       const days = totalDays
       const hours = totalHours % 24
       const minutes = totalMinutes % 60
       const seconds = totalSeconds % 60
-      
+
       setTimeElapsed({ days, hours, minutes, seconds, totalDays })
     }
-    
+
     calculateTime()
     const interval = setInterval(calculateTime, 1000)
-    
+
     return () => clearInterval(interval)
   }, [])
 
   const milestones = [
-    { days: 100, label: '100 ngày yêu', emoji: '💯' },
-    { days: 365, label: '1 năm bên nhau', emoji: '🎂' },
-    { days: 500, label: '500 ngày', emoji: '🌟' },
-    { days: 730, label: '2 năm', emoji: '💎' },
-    { days: 1000, label: '1000 ngày', emoji: '👑' },
+    { days: 365, label: '1 năm ngày cưới', emoji: '💑' },
+    { days: 730, label: '2 năm ngày cưới', emoji: '💎' },
+    { days: 1000, label: '1000 ngày bên nhau', emoji: '👑' },
+    { days: 1500, label: '1500 ngày hạnh phúc', emoji: '🌟' },
+    { days: 1826, label: '5 năm ngày cưới', emoji: '🎉' },
   ]
 
   const nextMilestone = milestones.find(m => m.days > timeElapsed.totalDays)
-  const daysToNextMilestone = nextMilestone ? nextMilestone.days - timeElapsed.totalDays : 0
+  const daysToNext = nextMilestone ? nextMilestone.days - timeElapsed.totalDays : 0
 
   return (
     <div className="love-count-container">
@@ -61,7 +61,7 @@ const LoveCount = ({ onBack }) => {
         <div className="count-header">
           <span className="count-emoji heartbeat">💕</span>
           <h1 className="count-title">Love Days</h1>
-          <p className="count-subtitle">Anh và em đã bên nhau</p>
+          <p className="count-subtitle">Ngày cưới của chúng mình</p>
         </div>
 
         {/* Main Counter */}
@@ -70,7 +70,7 @@ const LoveCount = ({ onBack }) => {
             <span className="number-value">{timeElapsed.days}</span>
             <span className="number-label">ngày</span>
           </div>
-          
+
           <div className="time-details">
             <div className="time-box">
               <span className="time-value">{String(timeElapsed.hours).padStart(2, '0')}</span>
@@ -91,34 +91,34 @@ const LoveCount = ({ onBack }) => {
 
         {/* Start Date */}
         <div className="start-date-card">
-          <div className="date-icon">📅</div>
+          <div className="date-icon">💒</div>
           <div className="date-info">
-            <span className="date-label">Ngày bắt đầu</span>
+            <span className="date-label">Ngày cưới</span>
             <span className="date-value">
-              {startDate.toLocaleDateString('vi-VN', { 
+              {startDate.toLocaleDateString('vi-VN', {
                 weekday: 'long',
-                day: 'numeric', 
-                month: 'long', 
-                year: 'numeric' 
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
               })}
             </span>
           </div>
         </div>
 
-        {/* Next Milestone */}
+        {/* Next Celebration */}
         {nextMilestone && (
           <div className="milestone-card">
             <div className="milestone-emoji">{nextMilestone.emoji}</div>
             <div className="milestone-info">
-              <span className="milestone-label">Cột mốc tiếp theo</span>
+              <span className="milestone-label">Ngày đặc biệt tiếp theo</span>
               <span className="milestone-value">{nextMilestone.label}</span>
-              <span className="milestone-countdown">Còn {daysToNextMilestone} ngày nữa</span>
+              <span className="milestone-countdown">Còn {daysToNext} ngày</span>
             </div>
             <div className="milestone-progress">
-              <div 
-                className="progress-bar" 
-                style={{ 
-                  width: `${((timeElapsed.totalDays / nextMilestone.days) * 100).toFixed(1)}%` 
+              <div
+                className="progress-bar"
+                style={{
+                  width: `${((timeElapsed.totalDays / nextMilestone.days) * 100).toFixed(1)}%`
                 }}
               />
             </div>
@@ -128,7 +128,7 @@ const LoveCount = ({ onBack }) => {
         {/* Love Quote */}
         <div className="love-quote">
           <span className="quote-icon">💌</span>
-          <p>"Mỗi ngày bên anh là một ngày hạnh phúc"</p>
+          <p>"Mỗi ngày bên anh là một ngày hạnh phúc của vợ"</p>
         </div>
       </div>
     </div>
