@@ -13,14 +13,10 @@
 .home-header {
   text-align: center;
   margin-bottom: 40px;
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: all 0.6s ease;
-}
-
-.home-header.show {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  will-change: opacity, transform;
 }
 
 .heart-logo {
@@ -73,12 +69,14 @@
   align-items: center;
   gap: 15px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
   box-shadow: 0 4px 20px rgba(255, 107, 157, 0.15);
-  opacity: 0;
-  transform: translateX(-30px);
+  opacity: 1;
+  transform: translateX(0);
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .menu-card::before {
@@ -92,22 +90,7 @@
   border-radius: 20px 0 0 20px;
 }
 
-.menu-card.show {
-  opacity: 1;
-  transform: translateX(0);
-  animation: slideIn 0.5s ease forwards;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+/* Animation removed - using CSS transitions instead */
 
 .menu-card:hover {
   transform: translateX(8px);

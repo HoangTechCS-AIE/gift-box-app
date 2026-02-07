@@ -1,12 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './Home.css'
 
 const Home = ({ onNavigate }) => {
-  const [showContent, setShowContent] = useState(false)
-
-  useEffect(() => {
-    setTimeout(() => setShowContent(true), 100)
-  }, [])
+  const [showContent] = useState(true) // Remove setTimeout delay - use CSS transitions instead
 
   const menuItems = [
     {
@@ -34,10 +30,10 @@ const Home = ({ onNavigate }) => {
       color: '#ff7eb3'
     },
     {
-      id: 'game',
-      title: 'Love Game',
-      subtitle: 'Trò chơi tình yêu',
-      icon: '🎮',
+      id: 'photobooth',
+      title: 'Love Photobooth',
+      subtitle: 'Chụp ảnh kỷ niệm',
+      icon: '📷',
       emoji: '💖',
       color: '#f06292'
     },

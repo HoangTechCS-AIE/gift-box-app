@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './LoveCount.css'
 
 const LoveCount = ({ onBack }) => {
@@ -12,10 +12,9 @@ const LoveCount = ({ onBack }) => {
     seconds: 0,
     totalDays: 0
   })
-  const [showContent, setShowContent] = useState(false)
-
-  useEffect(() => {
-    setTimeout(() => setShowContent(true), 100)
+  const [showContent, setShowContent] = useState(true) // Remove setTimeout delay
+  const containerRef = useRef(null)
+  const intervalRef = useRef(null)
 
     const calculateTime = () => {
       const now = new Date()
@@ -34,10 +33,41 @@ const LoveCount = ({ onBack }) => {
       setTimeElapsed({ days, hours, minutes, seconds, totalDays })
     }
 
-    calculateTime()
-    const interval = setInterval(calculateTime, 1000)
+  // Intersection Observer to pause interval when component is not visible
+  useEffect(() => {
+    if (!containerRef.current) return
 
-    return () => clearInterval(interval)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Component is visible - start/resume interval
+            if (!intervalRef.current) {
+              calculateTime() // Calculate immediately
+              intervalRef.current = setInterval(calculateTime, 1000)
+            }
+          } else {
+            // Component is not visible - pause interval
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current)
+              intervalRef.current = null
+            }
+          }
+        })
+      },
+      {
+        threshold: 0.1 // Trigger when 10% of component is visible
+      }
+    )
+
+    observer.observe(containerRef.current)
+
+    return () => {
+      observer.disconnect()
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
   }, [])
 
   const milestones = [
@@ -52,7 +82,7 @@ const LoveCount = ({ onBack }) => {
   const daysToNext = nextMilestone ? nextMilestone.days - timeElapsed.totalDays : 0
 
   return (
-    <div className="love-count-container">
+    <div className="love-count-container" ref={containerRef}>
       <button className="back-btn" onClick={onBack}>
         ←
       </button>

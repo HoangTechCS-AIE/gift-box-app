@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './LovePet.css'
 
 const LovePet = ({ onBack }) => {
-  const [showContent, setShowContent] = useState(false)
+  const [showContent, setShowContent] = useState(true) // Remove setTimeout delay
   const [petMood, setPetMood] = useState('happy') // happy, love, sleepy, excited
   const [hearts, setHearts] = useState([])
   const [petStats, setPetStats] = useState({
@@ -12,22 +12,51 @@ const LovePet = ({ onBack }) => {
   })
   const [message, setMessage] = useState('')
   const [isFeeding, setIsFeeding] = useState(false)
+  const containerRef = useRef(null)
+  const intervalRef = useRef(null)
 
+  // Giảm stats theo thời gian - pause when not visible
   useEffect(() => {
-    setTimeout(() => setShowContent(true), 100)
-  }, [])
+    if (!containerRef.current) return
 
-  // Giảm stats theo thời gian
-  useEffect(() => {
-    const interval = setInterval(() => {
+    const decreaseStats = () => {
       setPetStats(prev => ({
         love: Math.max(0, prev.love - 1),
         happiness: Math.max(0, prev.happiness - 1),
         energy: Math.max(0, prev.energy - 0.5)
       }))
-    }, 10000)
+    }
 
-    return () => clearInterval(interval)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Component is visible - start/resume interval
+            if (!intervalRef.current) {
+              intervalRef.current = setInterval(decreaseStats, 10000)
+            }
+          } else {
+            // Component is not visible - pause interval
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current)
+              intervalRef.current = null
+            }
+          }
+        })
+      },
+      {
+        threshold: 0.1 // Trigger when 10% of component is visible
+      }
+    )
+
+    observer.observe(containerRef.current)
+
+    return () => {
+      observer.disconnect()
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
   }, [])
 
   // Update mood based on stats
@@ -125,7 +154,7 @@ const LovePet = ({ onBack }) => {
   }
 
   return (
-    <div className="pet-container">
+    <div className="pet-container" ref={containerRef}>
       <button className="back-btn" onClick={onBack}>
         ←
       </button>

@@ -1,15 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './LoveLetter.css'
 
 const LoveLetter = ({ onBack }) => {
-  const [showContent, setShowContent] = useState(false)
+  const [showContent] = useState(true) // Remove setTimeout delay - use CSS transitions instead
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false)
   const [showLetter, setShowLetter] = useState(false)
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0)
-
-  useEffect(() => {
-    setTimeout(() => setShowContent(true), 100)
-  }, [])
 
   // CÓ THỂ THAY ĐỔI NỘI DUNG THƯ TÌNH NÀY
   const letters = [

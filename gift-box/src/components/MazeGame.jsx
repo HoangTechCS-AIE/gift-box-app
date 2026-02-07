@@ -2,17 +2,13 @@ import { useState, useEffect, useCallback } from 'react'
 import './MazeGame.css'
 
 const MazeGame = ({ onBack }) => {
-  const [showContent, setShowContent] = useState(false)
+  const [showContent] = useState(true) // Remove setTimeout delay - use CSS transitions instead
   const [gameState, setGameState] = useState('menu') // menu, playing, question, won
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0 })
   const [currentQuestion, setCurrentQuestion] = useState(null)
   const [score, setScore] = useState(0)
   const [moves, setMoves] = useState(0)
   const [answeredQuestions, setAnsweredQuestions] = useState([])
-
-  useEffect(() => {
-    setTimeout(() => setShowContent(true), 100)
-  }, [])
 
   // Maze: 0 = path, 1 = wall, 2 = goal, 3 = question
   const maze = [

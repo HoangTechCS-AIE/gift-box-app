@@ -1,14 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import './LoveMemories.css'
 
 const LoveMemories = ({ onBack }) => {
-  const [showContent, setShowContent] = useState(false)
+  const [showContent, setShowContent] = useState(true) // Remove setTimeout delay
   const [selectedMemory, setSelectedMemory] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const imageRefs = useRef({})
 
   useEffect(() => {
-    setTimeout(() => setShowContent(true), 100)
+    // Preload first image of each category
+    const preloadImages = [
+      '/buoi_hen_dau_tien.jpeg', // first-date
+      '/henho1.jpeg', // dating
+      '/du_lich1.jpeg', // travel
+      '/ngaycuoi1.jpg', // wedding
+      '/thienthannho1.jpg' // baby
+    ]
+    
+    preloadImages.forEach(url => {
+      const img = new Image()
+      img.src = url
+    })
   }, [])
 
   // CẤU TRÚC DỮ LIỆU MỚI VỚI 5 CHỦ ĐỀ
@@ -219,10 +232,12 @@ const LoveMemories = ({ onBack }) => {
     }
   ]
 
-  // Lọc ảnh theo category
-  const filteredMemories = selectedCategory === 'all'
-    ? memories
-    : memories.filter(m => m.category === selectedCategory)
+  // Memoize filtered memories to prevent recalculation
+  const filteredMemories = useMemo(() => {
+    return selectedCategory === 'all'
+      ? memories
+      : memories.filter(m => m.category === selectedCategory)
+  }, [selectedCategory])
 
   const openViewer = (memory, index) => {
     setSelectedMemory(memory)
@@ -241,11 +256,55 @@ const LoveMemories = ({ onBack }) => {
     setSelectedMemory(filteredMemories[newIndex])
   }
 
-  // Đếm số ảnh mỗi category
-  const getCategoryCount = (catId) => {
-    if (catId === 'all') return memories.length
-    return memories.filter(m => m.category === catId).length
-  }
+  // Memoize category counts
+  const categoryCounts = useMemo(() => {
+    const counts = {}
+    categories.forEach(cat => {
+      if (cat.id === 'all') {
+        counts[cat.id] = memories.length
+      } else {
+        counts[cat.id] = memories.filter(m => m.category === cat.id).length
+      }
+    })
+    return counts
+  }, [])
+
+  const getCategoryCount = (catId) => categoryCounts[catId] || 0
+
+  // Intersection Observer for lazy loading images
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target
+            if (img.dataset.src) {
+              img.src = img.dataset.src
+              img.removeAttribute('data-src')
+              observer.unobserve(img)
+            }
+          }
+        })
+      },
+      {
+        rootMargin: '50px' // Start loading 50px before image enters viewport
+      }
+    )
+
+    // Observe images after a short delay to ensure they're rendered
+    const timeoutId = setTimeout(() => {
+      Object.values(imageRefs.current).forEach(img => {
+        if (img && img.dataset?.src) {
+          observer.observe(img)
+        }
+      })
+    }, 100)
+
+    return () => {
+      clearTimeout(timeoutId)
+      observer.disconnect()
+    }
+  }, [filteredMemories])
 
   return (
     <div className="memories-container">
@@ -288,7 +347,14 @@ const LoveMemories = ({ onBack }) => {
               onClick={() => openViewer(memory, index)}
             >
               <div className="gallery-image-wrapper">
-                <img src={memory.url} alt={memory.title} className="gallery-image" loading="lazy" />
+                <img 
+                  ref={el => imageRefs.current[memory.id] = el}
+                  src={index < 4 ? memory.url : undefined} // Load first 4 images immediately
+                  data-src={index >= 4 ? memory.url : undefined} // Lazy load the rest
+                  alt={memory.title} 
+                  className="gallery-image" 
+                  loading={index < 4 ? "eager" : "lazy"}
+                />
                 <div className="gallery-overlay">
                   <span className="gallery-date">{memory.date}</span>
                 </div>

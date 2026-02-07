@@ -183,6 +183,34 @@ textarea {
   min-height: 120px;
 }
 
+/* Component Caching: Page Wrapper */
+.page-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1;
+}
+
+.page-wrapper.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  /* Keep component mounted but hidden */
+}
+
+.page-wrapper.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  position: relative;
+}
+
 /* Mobile Optimizations */
 @media (max-width: 480px) {
   .page-container {

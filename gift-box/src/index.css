@@ -95,10 +95,47 @@ body {
   50% { transform: translateY(-20px); }
 }
 
-.float { animation: float 3s ease-in-out infinite; }
-.pulse { animation: pulse 2s ease-in-out infinite; }
-.heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
-.sparkle { animation: sparkle 1.5s ease-in-out infinite; }
-.fade-in { animation: fadeIn 0.5s ease-out forwards; }
-.slide-up { animation: slideUp 0.6s ease-out forwards; }
-.bounce { animation: bounce 2s ease-in-out infinite; }
+.float { 
+  animation: float 3s ease-in-out infinite;
+  will-change: transform;
+}
+.pulse { 
+  animation: pulse 2s ease-in-out infinite;
+  will-change: transform;
+}
+.heartbeat { 
+  animation: heartbeat 1.5s ease-in-out infinite;
+  will-change: transform;
+}
+.sparkle { 
+  animation: sparkle 1.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.fade-in { 
+  animation: fadeIn 0.5s ease-out forwards;
+  will-change: opacity, transform;
+}
+.slide-up { 
+  animation: slideUp 0.6s ease-out forwards;
+  will-change: opacity, transform;
+}
+.bounce { 
+  animation: bounce 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration for smooth animations */
+.heart-particle,
+.menu-card,
+.gallery-item,
+.pet-avatar {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
