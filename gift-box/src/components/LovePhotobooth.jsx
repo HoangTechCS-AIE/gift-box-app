@@ -325,14 +325,66 @@ const LovePhotobooth = ({ onBack }) => {
     })
   }
 
-  // Tải ảnh về
-  const downloadPhoto = () => {
+  // Chuyển đổi data URL sang Blob
+  const dataURLtoBlob = (dataURL) => {
+    const arr = dataURL.split(',')
+    const mime = arr[0].match(/:(.*?);/)[1]
+    const bstr = atob(arr[1])
+    let n = bstr.length
+    const u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    return new Blob([u8arr], { type: mime })
+  }
+
+  // Tải ảnh về (hỗ trợ cả mobile và desktop)
+  const downloadPhoto = async () => {
     if (!capturedPhoto) return
 
-    const link = document.createElement('a')
-    link.download = `love-photobooth-${Date.now()}.png`
-    link.href = capturedPhoto
-    link.click()
+    // Kiểm tra xem có phải mobile không
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    
+    // Kiểm tra xem có hỗ trợ Web Share API không (thường có trên mobile)
+    if (isMobile && navigator.share) {
+      try {
+        // Chuyển đổi data URL sang File
+        const blob = dataURLtoBlob(capturedPhoto)
+        const file = new File([blob], `love-photobooth-${Date.now()}.png`, { type: 'image/png' })
+        
+        // Sử dụng Web Share API để share và lưu vào gallery
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'Love Photobooth',
+            text: 'Ảnh kỷ niệm từ Love Photobooth 💕'
+          })
+          return
+        }
+      } catch (err) {
+        // Nếu share thất bại (user cancel hoặc không hỗ trợ), fallback về download
+        console.log('Web Share failed, using download fallback:', err)
+      }
+    }
+
+    // Fallback: Download như bình thường (cho desktop hoặc mobile không hỗ trợ share)
+    try {
+      const blob = dataURLtoBlob(capturedPhoto)
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.download = `love-photobooth-${Date.now()}.png`
+      link.href = url
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      
+      // Cleanup
+      setTimeout(() => URL.revokeObjectURL(url), 100)
+    } catch (err) {
+      console.error('Download failed:', err)
+      setError('Không thể tải ảnh về. Vui lòng thử lại.')
+    }
   }
 
   // Chụp lại
