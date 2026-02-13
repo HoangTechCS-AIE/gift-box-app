@@ -8,7 +8,7 @@ const LovePhotobooth = ({ onBack }) => {
   const [selectedFrame, setSelectedFrame] = useState('heart')
   const [countdown, setCountdown] = useState(0)
   const [error, setError] = useState(null)
-  
+
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
   const streamRef = useRef(null)
@@ -34,15 +34,15 @@ const LovePhotobooth = ({ onBack }) => {
           height: { ideal: 720 }
         }
       })
-      
+
       streamRef.current = stream
       setCameraActive(true)
-      
+
       // Sử dụng setTimeout để đảm bảo state đã được update và video element đã render
       setTimeout(() => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream
-          
+
           // Đảm bảo video được load và play
           const playVideo = async () => {
             try {
@@ -58,7 +58,7 @@ const LovePhotobooth = ({ onBack }) => {
 
           videoRef.current.onloadedmetadata = playVideo
           videoRef.current.oncanplay = playVideo
-          
+
           // Try to play immediately if video is already ready
           if (videoRef.current.readyState >= 2) {
             playVideo()
@@ -126,7 +126,7 @@ const LovePhotobooth = ({ onBack }) => {
   // Vẽ khung vào canvas
   const drawFrame = (ctx, canvasWidth, canvasHeight, frameType) => {
     // Tăng padding đáng kể để có đủ không gian cho khung
-    const padding = 100 // Padding cho khung (tăng để có đủ không gian)
+    const padding = 80 // Match with capturePhoto padding
     const photoX = padding
     const photoY = padding
     const photoWidth = canvasWidth - (padding * 2)
@@ -198,19 +198,19 @@ const LovePhotobooth = ({ onBack }) => {
       ctx.lineWidth = config.borderWidth
       if (config.borderStyle === 'double') {
         // Double border - outer
-        drawRoundedRect(ctx, photoX - config.borderWidth - 5, photoY - config.borderWidth - 5, 
-                       photoWidth + (config.borderWidth * 2) + 10, photoHeight + (config.borderWidth * 2) + 10, 
-                       config.borderRadius + 5)
+        drawRoundedRect(ctx, photoX - config.borderWidth - 5, photoY - config.borderWidth - 5,
+          photoWidth + (config.borderWidth * 2) + 10, photoHeight + (config.borderWidth * 2) + 10,
+          config.borderRadius + 5)
         ctx.stroke()
         // Double border - inner
-        drawRoundedRect(ctx, photoX - config.borderWidth, photoY - config.borderWidth, 
-                       photoWidth + (config.borderWidth * 2), photoHeight + (config.borderWidth * 2), 
-                       config.borderRadius)
+        drawRoundedRect(ctx, photoX - config.borderWidth, photoY - config.borderWidth,
+          photoWidth + (config.borderWidth * 2), photoHeight + (config.borderWidth * 2),
+          config.borderRadius)
         ctx.stroke()
       } else {
-        drawRoundedRect(ctx, photoX - config.borderWidth, photoY - config.borderWidth, 
-                       photoWidth + (config.borderWidth * 2), photoHeight + (config.borderWidth * 2), 
-                       config.borderRadius)
+        drawRoundedRect(ctx, photoX - config.borderWidth, photoY - config.borderWidth,
+          photoWidth + (config.borderWidth * 2), photoHeight + (config.borderWidth * 2),
+          config.borderRadius)
         ctx.stroke()
       }
     }
@@ -219,10 +219,10 @@ const LovePhotobooth = ({ onBack }) => {
     ctx.font = `${config.emojiSize}px Arial`
     ctx.textAlign = 'left'
     ctx.textBaseline = 'top'
-    
+
     // Top-left emoji - đặt xa hơn từ góc ảnh
     ctx.fillText(config.emoji, photoX - 30, photoY - 30)
-    
+
     // Bottom-right emoji
     ctx.textAlign = 'right'
     ctx.textBaseline = 'bottom'
@@ -259,16 +259,16 @@ const LovePhotobooth = ({ onBack }) => {
     const ctx = canvas.getContext('2d')
 
     // Tính toán kích thước canvas với padding cho khung
-    const padding = 100 // Padding cho khung (tăng để có đủ không gian)
-    const borderWidth = selectedFrame === 'love' ? 8 : selectedFrame === 'rose' ? 6 : 
-                       selectedFrame === 'kiss' ? 10 : selectedFrame === 'wedding' ? 8 : 0
-    const emojiSpace = 100 // Không gian cho emoji (tăng để có đủ chỗ)
-    const borderSpace = borderWidth * 2 + 20 // Không gian cho border + margin
-    
-    // Set canvas size với đủ không gian cho khung, border và emoji
-    const canvasWidth = video.videoWidth + (padding * 2) + emojiSpace + borderSpace
-    const canvasHeight = video.videoHeight + (padding * 2) + emojiSpace + borderSpace
-    
+    // FIX: Không cộng thêm các giá trị lẻ tẻ (emojiSpace, borderSpace) vào canvas
+    // để tránh làm lệch tỉ lệ video gốc.
+    // Giữ padding cố định để khung ảnh bao quanh video một cách đều đặn.
+    const padding = 80 // Padding vừa đủ đẹp
+
+    // Set canvas size dựa trên kích thước video gốc + padding đều
+    // Điều này đảm bảo tỉ lệ ảnh (Aspect Ratio) không bị thay đổi
+    const canvasWidth = video.videoWidth + (padding * 2)
+    const canvasHeight = video.videoHeight + (padding * 2)
+
     canvas.width = canvasWidth
     canvas.height = canvasHeight
 
@@ -278,15 +278,15 @@ const LovePhotobooth = ({ onBack }) => {
 
     // Vẽ khung trước (nền + viền + emoji)
     const { photoX, photoY, photoWidth, photoHeight, borderRadius } = drawFrame(
-      ctx, 
-      canvasWidth, 
-      canvasHeight, 
+      ctx,
+      canvasWidth,
+      canvasHeight,
       selectedFrame
     )
 
     // Vẽ ảnh với border radius (tạo mask)
     ctx.save()
-    
+
     // Tạo clipping path với border radius
     if (borderRadius > 0) {
       drawRoundedRect(ctx, photoX, photoY, photoWidth, photoHeight, borderRadius)
@@ -302,10 +302,10 @@ const LovePhotobooth = ({ onBack }) => {
     ctx.save()
     ctx.scale(-1, 1) // Mirror horizontally
     ctx.drawImage(
-      video, 
-      -photoX - photoWidth, 
-      photoY, 
-      photoWidth, 
+      video,
+      -photoX - photoWidth,
+      photoY,
+      photoWidth,
       photoHeight
     )
     ctx.restore()
@@ -314,7 +314,7 @@ const LovePhotobooth = ({ onBack }) => {
     // Convert to image với chất lượng cao
     const imageData = canvas.toDataURL('image/png', 1.0)
     setCapturedPhoto(imageData)
-    
+
     console.log('Photo captured with frame:', {
       canvasSize: { width: canvas.width, height: canvas.height },
       videoSize: { width: video.videoWidth, height: video.videoHeight },
@@ -344,14 +344,14 @@ const LovePhotobooth = ({ onBack }) => {
 
     // Kiểm tra xem có phải mobile không
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-    
+
     // Kiểm tra xem có hỗ trợ Web Share API không (thường có trên mobile)
     if (isMobile && navigator.share) {
       try {
         // Chuyển đổi data URL sang File
         const blob = dataURLtoBlob(capturedPhoto)
         const file = new File([blob], `love-photobooth-${Date.now()}.png`, { type: 'image/png' })
-        
+
         // Sử dụng Web Share API để share và lưu vào gallery
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({
@@ -378,7 +378,7 @@ const LovePhotobooth = ({ onBack }) => {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      
+
       // Cleanup
       setTimeout(() => URL.revokeObjectURL(url), 100)
     } catch (err) {
@@ -390,14 +390,14 @@ const LovePhotobooth = ({ onBack }) => {
   // Chụp lại
   const retakePhoto = async () => {
     setCapturedPhoto(null)
-    
+
     // Nếu camera đang chạy, dừng lại trước
     if (cameraActive && streamRef.current) {
       stopCamera()
       // Đợi một chút để camera được giải phóng hoàn toàn
       await new Promise(resolve => setTimeout(resolve, 200))
     }
-    
+
     // Tự động khởi động lại camera
     await startCamera()
   }
@@ -413,7 +413,7 @@ const LovePhotobooth = ({ onBack }) => {
   useEffect(() => {
     if (cameraActive && videoRef.current && videoRef.current.srcObject) {
       const video = videoRef.current
-      
+
       const playVideo = async () => {
         try {
           await video.play()
@@ -508,7 +508,7 @@ const LovePhotobooth = ({ onBack }) => {
                   )}
                 </div>
                 <canvas ref={canvasRef} style={{ display: 'none' }} />
-                
+
                 <div className="camera-controls">
                   <button className="control-btn capture-btn" onClick={startCountdown}>
                     📸 Chụp ảnh
@@ -528,7 +528,7 @@ const LovePhotobooth = ({ onBack }) => {
             <div className={`photo-wrapper frame-${selectedFrame}`}>
               <img src={capturedPhoto} alt="Captured moment" className="captured-photo" />
             </div>
-            
+
             <div className="photo-actions">
               <button className="action-btn download-btn" onClick={downloadPhoto}>
                 💾 Tải về
