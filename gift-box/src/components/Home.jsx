@@ -3,7 +3,6 @@ import './Home.css'
 
 const Home = ({ onNavigate }) => {
   const [showContent] = useState(true)
-  const [showQR, setShowQR] = useState(false)
 
   const menuItems = [
     {
@@ -49,12 +48,6 @@ const Home = ({ onNavigate }) => {
         </div>
         <h1 className="home-title">Our Love Story</h1>
         <p className="home-subtitle">Gửi người chồng yêu dấu của em 💕</p>
-
-        {/* QR Code Button */}
-        <button className="qr-btn" onClick={() => setShowQR(true)}>
-          <span className="qr-icon">📱</span>
-          <span className="qr-text">Lấy mã QR</span>
-        </button>
       </div>
 
       {/* Menu Grid */}
@@ -86,20 +79,6 @@ const Home = ({ onNavigate }) => {
       <div className={`home-footer ${showContent ? 'show' : ''}`}>
         <p>Made with 💕 for you</p>
       </div>
-
-      {/* QR Code Modal */}
-      {showQR && (
-        <div className="qr-modal-overlay" onClick={() => setShowQR(false)}>
-          <div className="qr-modal" onClick={e => e.stopPropagation()}>
-            <button className="qr-close" onClick={() => setShowQR(false)}>×</button>
-            <h3 className="qr-title">Quét mã để mở App</h3>
-            <div className="qr-image-wrapper">
-              <img src="/qr-code.png" alt="QR Code" className="qr-image" />
-            </div>
-            <p className="qr-note">Sử dụng camera điện thoại để quét</p>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
