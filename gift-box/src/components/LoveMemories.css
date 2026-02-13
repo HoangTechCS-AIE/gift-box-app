@@ -32,8 +32,15 @@
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .memories-title {
@@ -99,34 +106,107 @@
   opacity: 0.8;
 }
 
-/* Gallery Grid */
+/* Gallery Grid - Polaroid Wall Style */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 25px;
+  /* Increased gap for rotation space */
+  margin-bottom: 40px;
+  padding: 10px;
 }
 
 .gallery-item {
   background: white;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.15);
+  padding: 10px 10px 45px 10px;
+  /* Polaroid bottom padding */
+  box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-    opacity: 1;
-    transform: scale(1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
-  transform: translateZ(0);
+  border-radius: 2px;
+  /* Sharp corners like real photos */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  position: relative;
+  transform-origin: center;
+  z-index: 1;
 }
 
+/* Washi Tape Effect */
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  /* Stick slightly above the card */
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  /* Default slight tilt */
+  width: 50px;
+  height: 14px;
+  border-radius: 1px;
+  /* Roughly cut edges */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  /* Very subtle shadow for tape */
+  z-index: 5;
+  opacity: 0.85;
+  /* Semi-transparent */
+  backdrop-filter: blur(1px);
+  /* Frosted look */
+}
+
+/* Tape Variations (Colors & Angles) */
+/* Pink Tape */
+.gallery-item:nth-child(4n+1)::after {
+  background: rgba(255, 182, 193, 0.9);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+/* Blue Tape */
+.gallery-item:nth-child(4n+2)::after {
+  background: rgba(173, 216, 230, 0.9);
+  transform: translateX(-50%) rotate(2deg);
+}
+
+/* Mint Tape */
+.gallery-item:nth-child(4n+3)::after {
+  background: rgba(152, 251, 152, 0.9);
+  transform: translateX(-50%) rotate(1deg);
+}
+
+/* Peach Tape */
+.gallery-item:nth-child(4n+4)::after {
+  background: rgba(255, 218, 185, 0.9);
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+/* Random-ish Rotations */
+.gallery-item:nth-child(odd) {
+  transform: rotate(-3deg);
+}
+
+.gallery-item:nth-child(even) {
+  transform: rotate(2deg);
+}
+
+.gallery-item:nth-child(3n) {
+  transform: rotate(-1.5deg);
+}
+
+.gallery-item:nth-child(4n) {
+  transform: rotate(3deg);
+}
+
+.gallery-item:nth-child(5n) {
+  transform: rotate(-4deg);
+}
+
+/* Hover Effect - Lift and Straighten */
 .gallery-item:hover {
-  transform: scale(1.03);
-  box-shadow: 0 12px 35px rgba(255, 107, 157, 0.25);
+  transform: scale(1.1) rotate(0deg);
+  z-index: 10;
+  box-shadow: 5px 15px 30px rgba(0, 0, 0, 0.25);
 }
 
 .gallery-item:active {
-  transform: scale(0.98);
+  transform: scale(1.05) rotate(0deg);
 }
 
 .gallery-image-wrapper {
@@ -134,67 +214,50 @@
   width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
+  border: 1px solid #f0f0f0;
+  /* Subtle photo border */
 }
 
 .gallery-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
+/* Zoom image slightly on hover */
 .gallery-item:hover .gallery-image {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
+/* Removed old overlay since we want the text at the bottom */
 .gallery-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 30px 10px 10px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.5));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.gallery-item:hover .gallery-overlay {
-  opacity: 1;
-}
-
-.gallery-date {
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.play-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: #ff6b9d;
+  display: none;
 }
 
 .gallery-info {
-  padding: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 45px;
+  /* Matches bottom padding */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .gallery-info h4 {
-  font-size: 0.85rem;
+  font-family: 'Pacifico', cursive;
+  /* Handwritten font */
+  font-size: 1.1rem;
   color: #5a3d4a;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* Darker ink color */
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transform: rotate(-1deg);
+  /* Slight handwritten tilt */
 }
 
 /* Empty State */
@@ -231,8 +294,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .viewer-content {
