@@ -17,7 +17,7 @@ const LoveMemories = ({ onBack }) => {
       '/ngaycuoi1.jpg', // wedding
       '/thienthannho1.jpg' // baby
     ]
-    
+
     preloadImages.forEach(url => {
       const img = new Image()
       img.src = url
@@ -41,194 +41,131 @@ const LoveMemories = ({ onBack }) => {
       id: 1,
       category: 'first-date',
       type: 'image',
-      url: '/buoi_hen_dau_tien.jpeg',
-      title: 'Buổi hẹn đầu tiên',
-      date: '14/02/2024',
-      description: 'Ngày định mệnh - lần đầu gặp anh. Em vẫn nhớ như in ánh mắt anh ngày hôm đó 💕'
+      url: '/buoi_hen_dau_tien.jpeg'
     },
     // === HẸN HÒ (4 ảnh) ===
     {
       id: 2,
       category: 'dating',
       type: 'image',
-      url: '/henho1.jpeg',
-      title: 'Hẹn hò #1',
-      date: '20/02/2024',
-      description: 'Buổi hẹn đầu tiên chỉ có hai đứa mình, cà phê và những câu chuyện'
+      url: '/henho1.jpeg'
     },
     {
       id: 3,
       category: 'dating',
       type: 'image',
-      url: '/henho2.jpeg',
-      title: 'Hẹn hò #2',
-      date: '25/02/2024',
-      description: 'Anh đưa em đi chơi, em vui lắm! 🥰'
+      url: '/henho2.jpeg'
     },
     {
       id: 4,
       category: 'dating',
       type: 'image',
-      url: '/henho3.jpeg',
-      title: 'Hẹn hò #3',
-      date: '10/03/2024',
-      description: 'Những ngày tháng yêu đương đầu tiên'
+      url: '/henho3.jpeg'
     },
     {
       id: 5,
       category: 'dating',
       type: 'image',
-      url: '/henho4.jpeg',
-      title: 'Hẹn hò #4',
-      date: '15/03/2024',
-      description: 'Cùng nhau khám phá những điều mới mẻ 💖'
+      url: '/henho4.jpeg'
     },
     // === DU LỊCH (5 ảnh) ===
     {
       id: 6,
       category: 'travel',
       type: 'image',
-      url: '/du_lich1.jpeg',
-      title: 'Du lịch - Ngày 1',
-      date: '15/06/2024',
-      description: 'Bắt đầu chuyến đi đầu tiên cùng nhau! 🧳'
+      url: '/du_lich1.jpeg'
     },
     {
       id: 7,
       category: 'travel',
       type: 'image',
-      url: '/du_lich2lich2.jpg',
-      title: 'Du lịch - Ngày 2',
-      date: '16/06/2024',
-      description: 'Khám phá những địa điểm mới, chụp thật nhiều ảnh 📸'
+      url: '/du_lich2lich2.jpg'
     },
     {
       id: 8,
       category: 'travel',
       type: 'image',
-      url: '/du_lich3.jpg',
-      title: 'Du lịch - Ngày 3',
-      date: '17/06/2024',
-      description: 'Những khoảnh khắc tuyệt vời bên nhau 🌴'
+      url: '/du_lich3.jpg'
     },
     {
       id: 9,
       category: 'travel',
       type: 'image',
-      url: '/du_lich4.jpg',
-      title: 'Du lịch - Ngày 4',
-      date: '18/06/2024',
-      description: 'Tận hưởng từng giây phút bên anh ❤️'
+      url: '/du_lich4.jpg'
     },
     {
       id: 10,
       category: 'travel',
       type: 'image',
-      url: '/du_lich5.jpg',
-      title: 'Du lịch - Ngày 5',
-      date: '19/06/2024',
-      description: 'Chuyến đi kết thúc nhưng kỷ niệm còn mãi ✨'
+      url: '/du_lich5.jpg'
     },
     // === NGÀY CƯỚI (6 ảnh) ===
     {
       id: 11,
       category: 'wedding',
       type: 'image',
-      url: '/ngaycuoi1.jpg',
-      title: 'Ngày cưới - Chuẩn bị',
-      date: '05/10/2024',
-      description: 'Sáng ngày cưới, em run lắm nhưng cũng hạnh phúc lắm! 💍'
+      url: '/ngaycuoi1.jpg'
     },
     {
       id: 12,
       category: 'wedding',
       type: 'image',
-      url: '/ngaycuoi2.jpg',
-      title: 'Ngày cưới - Lễ cưới',
-      date: '05/10/2024',
-      description: 'Khoảnh khắc trao nhẫn - em là cô dâu của anh 👰🤵'
+      url: '/ngaycuoi2.jpg'
     },
     {
       id: 13,
       category: 'wedding',
       type: 'image',
-      url: '/ngaycuoi3.jpg',
-      title: 'Ngày cưới - Ảnh cưới',
-      date: '05/10/2024',
-      description: 'Những bức ảnh cưới đẹp nhất đời em 📷'
+      url: '/ngaycuoi3.jpg'
     },
     {
       id: 14,
       category: 'wedding',
       type: 'image',
-      url: '/ngaycuoi4.jpg',
-      title: 'Ngày cưới - Lễ ăn hỏi',
-      date: '04/10/2024',
-      description: 'Lễ ăn hỏi - gia đình hai bên sum họp 💑'
+      url: '/ngaycuoi4.jpg'
     },
     {
       id: 15,
       category: 'wedding',
       type: 'image',
-      url: '/ngaycuoi5.jpg',
-      title: 'Ngày cưới - Hậu trường',
-      date: '05/10/2024',
-      description: 'Những khoảnh khắc hậu trường đáng yêu 🎬'
+      url: '/ngaycuoi5.jpg'
     },
     {
       id: 16,
       category: 'wedding',
       type: 'image',
-      url: '/ngaycuoi6.jpg',
-      title: 'Ngày cưới - Đám cưới',
-      date: '05/10/2024',
-      description: 'Đám cưới của chúng mình - ngày hạnh phúc nhất! 🥳'
+      url: '/ngaycuoi6.jpg'
     },
     // === THIÊN THẦNH NHỎ (5 ảnh) ===
     {
       id: 17,
       category: 'baby',
       type: 'image',
-      url: '/thienthannho1.jpg',
-      title: 'Thiên thần nhỏ - Tin vui',
-      date: '15/11/2024',
-      description: 'Em biết tin mình có baby rồi! Em vui khóc luôn! 👶'
+      url: '/thienthannho1.jpg'
     },
     {
       id: 18,
       category: 'baby',
       type: 'image',
-      url: '/thienthannho2.jpg',
-      title: 'Thiên thần nhỏ - Siêu âm',
-      date: '20/11/2024',
-      description: 'Lần đầu tiên nhìn thấy hình siêu âm của con 🥺'
+      url: '/thienthannho2.jpg'
     },
     {
       id: 19,
       category: 'baby',
       type: 'image',
-      url: '/thienthannho3.jpg',
-      title: 'Thiên thần nhỏ - Baby yêu',
-      date: '10/12/2024',
-      description: 'Em đã yêu con từ khi chưa gặp mặt 💕'
+      url: '/thienthannho3.jpg'
     },
     {
       id: 20,
       category: 'baby',
       type: 'image',
-      url: '/thienthannho4.jpg',
-      title: 'Thiên thần nhỏ - Chờ con',
-      date: '25/12/2024',
-      description: 'Mùa Giáng sinh đầu tiên có con bên 🥰'
+      url: '/thienthannho4.jpg'
     },
     {
       id: 21,
       category: 'baby',
       type: 'image',
-      url: '/thienthannho5.jpg',
-      title: 'Thiên thần nhỏ - Sắp gặp',
-      date: '10/01/2025',
-      description: 'Sắp gặp con rồi, em và anh háo hức lắm! 🤰'
+      url: '/thienthannho5.jpg'
     }
   ]
 
@@ -238,6 +175,11 @@ const LoveMemories = ({ onBack }) => {
       ? memories
       : memories.filter(m => m.category === selectedCategory)
   }, [selectedCategory])
+
+  const getCategoryName = (catId) => {
+    const cat = categories.find(c => c.id === catId)
+    return cat ? cat.name : ''
+  }
 
   const openViewer = (memory, index) => {
     setSelectedMemory(memory)
@@ -347,23 +289,23 @@ const LoveMemories = ({ onBack }) => {
               onClick={() => openViewer(memory, index)}
             >
               <div className="gallery-image-wrapper">
-                <img 
+                <img
                   ref={el => imageRefs.current[memory.id] = el}
                   src={index < 4 ? memory.url : undefined} // Load first 4 images immediately
                   data-src={index >= 4 ? memory.url : undefined} // Lazy load the rest
-                  alt={memory.title} 
-                  className="gallery-image" 
+                  alt={getCategoryName(memory.category)}
+                  className="gallery-image"
                   loading={index < 4 ? "eager" : "lazy"}
                 />
                 <div className="gallery-overlay">
-                  <span className="gallery-date">{memory.date}</span>
+                  {/* Date removed */}
                 </div>
                 {memory.type === 'video' && (
                   <div className="play-icon">▶</div>
                 )}
               </div>
               <div className="gallery-info">
-                <h4>{memory.title}</h4>
+                <h4>{getCategoryName(memory.category)}</h4>
               </div>
             </div>
           ))}
@@ -389,7 +331,7 @@ const LoveMemories = ({ onBack }) => {
             </button>
 
             <div className="viewer-image-container">
-              <img src={selectedMemory.url} alt={selectedMemory.title} />
+              <img src={selectedMemory.url} alt={getCategoryName(selectedMemory.category)} />
             </div>
 
             <button className="viewer-nav next" onClick={() => navigateMemory(1)}>
@@ -397,9 +339,7 @@ const LoveMemories = ({ onBack }) => {
             </button>
 
             <div className="viewer-info">
-              <h3>{selectedMemory.title}</h3>
-              <span className="viewer-date">📅 {selectedMemory.date}</span>
-              <p>{selectedMemory.description}</p>
+              <h3>{getCategoryName(selectedMemory.category)}</h3>
             </div>
 
             <div className="viewer-counter">
