@@ -5,7 +5,6 @@ import LoveCount from './components/LoveCount'
 import LoveMemories from './components/LoveMemories'
 import LoveLetter from './components/LoveLetter'
 import LovePhotobooth from './components/LovePhotobooth'
-import LovePet from './components/LovePet'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -27,8 +26,8 @@ function App() {
       {/* Floating Hearts Background */}
       <div className="floating-hearts">
         {floatingHearts.map((heart) => (
-          <div 
-            key={heart.id} 
+          <div
+            key={heart.id}
             className="heart-particle"
             style={{
               left: `${heart.left}%`,
@@ -42,30 +41,26 @@ function App() {
           </div>
         ))}
       </div>
-      
+
       {/* Component Caching: Render all components but hide inactive ones */}
       <div className={`page-wrapper ${currentPage === 'home' ? 'active' : 'hidden'}`}>
         <Home onNavigate={setCurrentPage} />
       </div>
-      
+
       <div className={`page-wrapper ${currentPage === 'lovecount' ? 'active' : 'hidden'}`}>
         <LoveCount onBack={() => setCurrentPage('home')} />
       </div>
-      
+
       <div className={`page-wrapper ${currentPage === 'memories' ? 'active' : 'hidden'}`}>
         <LoveMemories onBack={() => setCurrentPage('home')} />
       </div>
-      
+
       <div className={`page-wrapper ${currentPage === 'letter' ? 'active' : 'hidden'}`}>
         <LoveLetter onBack={() => setCurrentPage('home')} />
       </div>
-      
+
       <div className={`page-wrapper ${currentPage === 'photobooth' ? 'active' : 'hidden'}`}>
         <LovePhotobooth onBack={() => setCurrentPage('home')} />
-      </div>
-      
-      <div className={`page-wrapper ${currentPage === 'pet' ? 'active' : 'hidden'}`}>
-        <LovePet onBack={() => setCurrentPage('home')} />
       </div>
     </div>
   )
